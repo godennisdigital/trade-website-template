@@ -14,6 +14,21 @@ python3 -m http.server 8000
 
 Open <http://localhost:8000>. No package install, build step, framework, or deployment server is required; any static host can serve the files.
 
+## Automated tests
+
+The reusable Playwright suite checks page structure, in-page links, service cards, desktop and mobile navigation, quote-form validation and feedback, contact details against structured data, serious accessibility issues, responsive horizontal overflow, and the footer year. GitHub Actions runs the suite for pushes and pull requests.
+
+Install Node.js 22 or later, then install the dependencies and Chromium once:
+
+```sh
+npm install
+npx playwright install chromium
+```
+
+Run the suite with `npm test`. To see the browser while tests run, use `npm run test:headed`; after a run, open its HTML report with `npm run test:report`. The test runner starts the existing static site automatically. Set `PLAYWRIGHT_BASE_URL` only when testing a separately hosted copy.
+
+When adapting this template, edit `tests/site.config.json` if sections, service-card markup, or form selectors change. The tests intentionally infer client-specific phone details from the page and its LocalBusiness structured data rather than hard-coding Apex's contact information.
+
 ## Project layout
 
 ```text

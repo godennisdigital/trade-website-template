@@ -1,0 +1,22 @@
+{
+  "requiredSectionIds": [
+    "main",
+    "top",
+    "available-services",
+    "about-us",
+    "service-area",
+    "reviews",
+    "quote-form",
+    "footer"
+  ],
+  "minimumServiceCards": 1,
+  "formSelector": "#contact-form",
+  "requiredFormFieldSelectors": [
+    "#name",
+    "#phone-number",
+    "#service-needed",
+    "#message"
+  ],
+  "phoneFieldSelector": "#phone-number",
+  "formStatusSelector": "#form-status"
+}

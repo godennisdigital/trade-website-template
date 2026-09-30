@@ -1,5 +1,7 @@
 # Client Launch Checklist
 
+<div style="font-size: 1.1em; line-height: 1.7;">
+
 ## Business details
 
 - [ ] Replace every Apex name, phone number, email, address, and service-area reference.
@@ -23,3 +25,5 @@
 - [ ] Add appropriate privacy information and confirm how submitted data is handled.
 - [ ] Verify the live domain, HTTPS, page metadata, and LocalBusiness structured data.
 - [ ] Create the site in a separate repository and verify the client repo contains no internal business planning files.
+
+</div>

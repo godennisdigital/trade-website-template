@@ -28,6 +28,21 @@ test('runs without uncaught JavaScript errors', async ({ page }) => {
   expect(pageErrors).toEqual([]);
 });
 
+test('selects a smaller hero image source on mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 412, height: 823 });
+  const heroImage = page.locator('.hero-visual > img');
+
+  await expect(heroImage).toHaveAttribute('srcset', /480w/);
+  const imageDetails = await heroImage.evaluate((image) => ({
+    selectedWidth: Number(new URL(image.currentSrc).searchParams.get('w')),
+    renderedWidth: image.getBoundingClientRect().width,
+    devicePixelRatio: window.devicePixelRatio,
+  }));
+
+  expect(imageDetails.selectedWidth).toBeLessThan(1400);
+  expect(imageDetails.selectedWidth).toBeGreaterThanOrEqual(imageDetails.renderedWidth * imageDetails.devicePixelRatio);
+});
+
 test('keeps in-page links and service cards connected to real content', async ({ page }) => {
   const brokenAnchorLinks = await page.locator('a[href^="#"]').evaluateAll((links) =>
     links

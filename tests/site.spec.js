@@ -107,9 +107,22 @@ test('validates required quote fields and rejects an invalid phone number', asyn
   await expect(page.locator(siteConfig.formStatusSelector)).toBeEmpty();
 });
 
-test('shows feedback and resets the quote form after valid submission', async ({ page }) => {
+test('sends valid quote requests to Formspree and resets after success', async ({ page }) => {
   const form = page.locator(siteConfig.formSelector);
   const status = page.locator(siteConfig.formStatusSelector);
+  const endpoint = await form.getAttribute('action');
+  await expect(form).toHaveAttribute('method', 'POST');
+
+  await page.route(endpoint, async (route) => {
+    expect(route.request().method()).toBe('POST');
+    expect(route.request().headers().accept).toBe('application/json');
+    expect(route.request().postData()).toContain('Alex Morgan');
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ ok: true }),
+    });
+  });
 
   await page.locator(siteConfig.requiredFormFieldSelectors[0]).fill('Alex Morgan');
   await page.locator(siteConfig.phoneFieldSelector).fill('+447700900123');
@@ -117,9 +130,26 @@ test('shows feedback and resets the quote form after valid submission', async ({
   await page.locator(siteConfig.requiredFormFieldSelectors[3]).fill('A test enquiry.');
   await form.locator('button[type="submit"]').click();
 
-  await expect(status).toHaveText(/\S/);
+  await expect(status).toContainText(/request has been sent/i);
   await expect(page.locator(siteConfig.requiredFormFieldSelectors[0])).toHaveValue('');
   await expect(page.locator(siteConfig.phoneFieldSelector)).toHaveValue('');
+});
+
+test('keeps quote details and reports an error when Formspree rejects a request', async ({ page }) => {
+  const form = page.locator(siteConfig.formSelector);
+  const status = page.locator(siteConfig.formStatusSelector);
+  const endpoint = await form.getAttribute('action');
+
+  await page.route(endpoint, (route) => route.fulfill({ status: 422, body: 'Submission rejected' }));
+  await page.locator(siteConfig.requiredFormFieldSelectors[0]).fill('Alex Morgan');
+  await page.locator(siteConfig.phoneFieldSelector).fill('+447700900123');
+  await page.locator(siteConfig.requiredFormFieldSelectors[2]).selectOption({ index: 1 });
+  await page.locator(siteConfig.requiredFormFieldSelectors[3]).fill('A test enquiry.');
+  await form.locator('button[type="submit"]').click();
+
+  await expect(status).toContainText(/couldn't send your request/i);
+  await expect(page.locator(siteConfig.requiredFormFieldSelectors[0])).toHaveValue('Alex Morgan');
+  await expect(page.locator(siteConfig.phoneFieldSelector)).toHaveValue('+447700900123');
 });
 
 test('keeps contact links consistent with structured business data', async ({ page }) => {

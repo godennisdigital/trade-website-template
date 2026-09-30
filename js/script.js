@@ -42,7 +42,7 @@ if (phoneInput && quoteForm && formStatus) {
     formStatus.textContent = "";
   });
 
-  quoteForm.addEventListener("submit", (event) => {
+  quoteForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     formStatus.textContent = "";
 
@@ -54,9 +54,23 @@ if (phoneInput && quoteForm && formStatus) {
     }
 
     phoneInput.setCustomValidity("");
-    const formData = Object.fromEntries(new FormData(quoteForm).entries());
-    console.log("Apex quote request (demo only):", formData);
-    formStatus.textContent = `Thanks, ${formData.name}. Your details are validated. This demo form is not connected to a booking inbox yet.`;
-    quoteForm.reset();
+    const formData = new FormData(quoteForm);
+
+    try {
+      const response = await fetch(quoteForm.action, {
+        method: quoteForm.method,
+        headers: { Accept: "application/json" },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Form submission failed with status ${response.status}.`);
+      }
+
+      formStatus.textContent = `Thanks, ${formData.get("name")}. Your request has been sent. We'll be in touch soon.`;
+      quoteForm.reset();
+    } catch {
+      formStatus.textContent = "We couldn't send your request. Please try again or call us directly.";
+    }
   });
 }

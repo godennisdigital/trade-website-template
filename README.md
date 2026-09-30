@@ -58,7 +58,7 @@ When adapting this template, edit `tests/site.config.json` if sections, service-
 
 ## Form behavior
 
-The quote form validates required fields and a 10–15 digit phone number in the browser. It does not send or store enquiries: a successful submission only logs the values to the browser console and shows a demo message. Connect a form provider or client endpoint, then test delivery, privacy wording, and error states before launch.
+The quote form validates required fields and a 10–15 digit phone number in the browser, then posts submissions to the Formspree endpoint configured in `index.html`. Successful submissions show confirmation and clear the form; failed requests retain the entered details and show an error. Verify the endpoint is configured to deliver to the intended inbox, and update the privacy wording to reflect Formspree's handling of submitted data before launch.
 
 ## External services
 

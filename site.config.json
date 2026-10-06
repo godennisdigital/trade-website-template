@@ -1,0 +1,223 @@
+{
+  "business": {
+    "name": "Apex Plumbing & Heating",
+    "brandName": "APEX",
+    "brandTagline": "PLUMBING & HEATING",
+    "brandInitial": "A",
+    "phone": "+442079460958",
+    "phoneDisplay": "020 7946 0958",
+    "email": "info@apexplumbingheating.co.uk",
+    "streetAddress": "123 High Street",
+    "locality": "London",
+    "postcode": "SW9 8XY",
+    "country": "GB",
+    "areaServed": [
+      "Lambeth",
+      "Southwark",
+      "Wandsworth",
+      "Croydon",
+      "Bromley"
+    ],
+    "mapQuery": "South London, UK",
+    "facebookUrl": "https://www.facebook.com/",
+    "instagramUrl": "https://www.instagram.com/"
+  },
+  "seo": {
+    "title": "24/7 Emergency Plumbers South London | Apex Plumbing & Heating",
+    "description": "24/7 emergency plumbing and heating repairs across South London. Gas Safe registered engineers, clear pricing and no call-out fees."
+  },
+  "theme": {
+    "colorScheme": "light",
+    "colors": {
+      "ink": "#1c302d",
+      "muted": "#59665f",
+      "green": "#173b35",
+      "green-deep": "#102d29",
+      "green-soft": "#e8eeea",
+      "lime": "#d4ed73",
+      "paper": "#f6f7f2",
+      "white": "#fff",
+      "line": "#dfe4dd"
+    }
+  },
+  "notice": {
+    "text": "Emergency help, day or night · South London callouts",
+    "linkText": "Speak to an engineer"
+  },
+  "hero": {
+    "eyebrow": "South London's local plumbing team",
+    "title": "When water won't wait, <em>we're already on our way.</em>",
+    "lede": "Fast, reliable plumbing and heating repairs from fully qualified, Gas Safe registered engineers. No call-out fees. No hidden costs.",
+    "primaryButton": "Call our team",
+    "secondaryButton": "Request a free quote",
+    "proofTitle": "Trusted across South London",
+    "proofBody": "Friendly help, straightforward pricing",
+    "imageNoteTitle": "Here when you need us",
+    "imageNoteBody": "Emergency callouts, 24/7"
+  },
+  "trustStrip": [
+    "Gas Safe registered",
+    "Fully insured",
+    "No call-out fees",
+    "15+ years' experience"
+  ],
+  "services": [
+    {
+      "title": "Emergency plumbing",
+      "description": "Burst pipes, leaks and blockages fixed fast, day or night."
+    },
+    {
+      "title": "Boilers",
+      "description": "Servicing, repairs and full boiler replacements from trusted brands."
+    },
+    {
+      "title": "Central heating",
+      "description": "Radiator installs, power flushing and system upgrades."
+    },
+    {
+      "title": "Bathroom plumbing",
+      "description": "Toilets, taps, showers and complete bathroom fit-outs."
+    },
+    {
+      "title": "Drain clearance",
+      "description": "Hassle-free unblocking for sinks, toilets and outdoor drains."
+    },
+    {
+      "title": "Home maintenance",
+      "description": "Routine checks and small repairs to keep things running smoothly."
+    }
+  ],
+  "about": {
+    "eyebrow": "A little about Apex",
+    "heading": "Respect for your home.<br><em>Care in every detail.</em>",
+    "intro": "With over 15 years of experience, Apex Plumbing & Heating has been keeping South London homes running smoothly. We're fully insured, Gas Safe registered, and pride ourselves on honest pricing and tidy work.",
+    "supporting": "No job too big or too small. We treat every home like it's our own.",
+    "cta": "Tell us what you need",
+    "tagline": "BUILT ON TRUST, NOT SHORTCUTS.",
+    "experienceYears": "15",
+    "experienceLabel": "YEARS\nON THE TOOLS",
+    "experienceSuffix": "+"
+  },
+  "area": {
+    "eyebrow": "Close by, ready to help",
+    "heading": "South London<br><em>is our home turf.</em>",
+    "description": "Proudly serving Lambeth, Southwark, Wandsworth, Croydon, Bromley and the surrounding area. Not sure if we cover you? Give us a call. We're often happy to travel further for bigger jobs.",
+    "list": [
+      "Lambeth",
+      "Southwark",
+      "Wandsworth",
+      "Croydon",
+      "Bromley",
+      "And nearby"
+    ],
+    "cta": "Check your postcode",
+    "mapTag": "LOCAL TEAM, LOCAL KNOW-HOW"
+  },
+  "work": {
+    "eyebrow": "A few jobs, done right",
+    "heading": "The work speaks<br><em>for itself.</em>",
+    "intro": "Careful repairs and installations, with your home left as tidy as we found it.",
+    "items": [
+      { "category": "HEATING", "title": "The details matter" },
+      { "category": "BATHROOMS", "title": "Made to feel right" },
+      { "category": "INSTALLATIONS", "title": "Ready for everyday" }
+    ]
+  },
+  "reviews": {
+    "eyebrow": "Kind words from the neighbourhood",
+    "heading": "Good people.<br><em>Good work.</em>",
+    "rating": "5.0",
+    "ratingLabel": "From our South London customers",
+    "items": [
+      {
+        "quote": "Came out within the hour for a burst pipe emergency. Fair price, brilliant work. Couldn't recommend enough.",
+        "name": "Sarah M.",
+        "location": "Clapham",
+        "initials": "SM"
+      },
+      {
+        "quote": "Replaced our boiler in a single day with zero mess left behind. Professional from start to finish.",
+        "name": "James T.",
+        "location": "Streatham",
+        "initials": "JT"
+      },
+      {
+        "quote": "Honest, punctual, and didn't try to upsell us on anything we didn't need. Will be using again.",
+        "name": "Priya K.",
+        "location": "Croydon",
+        "initials": "PK"
+      }
+    ]
+  },
+  "quote": {
+    "eyebrow": "Let's get it sorted",
+    "heading": "Tell us what's<br><em>going on.</em>",
+    "description": "Share a few details and our team will get back to you. Need urgent help? Call us any time.",
+    "smallPrint": "Available 24 hours, every day",
+    "formNote": "No obligation. We'll use your details to respond to your enquiry.",
+    "defaultOption": "Select a service",
+    "services": [
+      { "value": "emergency-plumbing", "label": "Emergency plumbing" },
+      { "value": "boiler", "label": "Boiler repair or installation" },
+      { "value": "central-heating", "label": "Central heating" },
+      { "value": "bathroom", "label": "Bathroom plumbing" },
+      { "value": "drains", "label": "Drain clearance" },
+      { "value": "maintenance", "label": "General maintenance" },
+      { "value": "other", "label": "Something else" }
+    ]
+  },
+  "images": {
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=768&q=75",
+      "srcset": "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=480&q=75 480w, https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=768&q=75 768w, https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=1200&q=75 1200w, https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=1600&q=75 1600w",
+      "sizes": "(max-width: 700px) calc(100vw - 40px), 42vw",
+      "alt": "Plumber working on pipework beneath a kitchen sink"
+    },
+    "about": {
+      "src": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=768&q=75",
+      "srcset": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=480&q=75 480w, https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=768&q=75 768w, https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1100&q=75 1100w, https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1400&q=75 1400w",
+      "sizes": "(max-width: 700px) 100vw, 50vw",
+      "alt": "Qualified tradesperson carefully installing plumbing equipment"
+    },
+    "work": [
+      {
+        "src": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=480&q=75",
+        "srcset": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=360&q=75 360w, https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=480&q=75 480w, https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=75 900w",
+        "sizes": "(max-width: 700px) calc(100vw - 40px), (max-width: 1240px) 32vw, 400px",
+        "alt": "Neatly installed radiator and heating pipework"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=360&q=75",
+        "srcset": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=240&q=75 240w, https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=360&q=75 360w, https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=480&q=75 480w, https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=900&q=75 900w",
+        "sizes": "(max-width: 700px) calc(50vw - 25px), (max-width: 1240px) 32vw, 400px",
+        "alt": "Modern bathroom with carefully finished fixtures"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=360&q=75",
+        "srcset": "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=240&q=75 240w, https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=360&q=75 360w, https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=480&q=75 480w, https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=75 900w",
+        "sizes": "(max-width: 700px) calc(50vw - 25px), (max-width: 1240px) 32vw, 400px",
+        "alt": "Bright, finished home interior after renovation"
+      }
+    ]
+  },
+  "map": {
+    "title": "Map showing South London service area",
+    "src": "https://maps.google.com/maps?q=South%20London%2C%20UK&t=&z=10&ie=UTF8&iwloc=&output=embed"
+  },
+  "slogans": {
+    "imageCaption": "GOOD WORK. DONE PROPERLY.",
+    "aboutTagline": "BUILT ON TRUST, NOT SHORTCUTS.",
+    "mapTag": "LOCAL TEAM, LOCAL KNOW-HOW",
+    "footerTagline": "Good work. Done properly. Keeping South London homes running."
+  },
+  "footer": {
+    "tagline": "Good work. Done properly.<br>Keeping South London homes running.",
+    "getInTouchHeading": "Get in touch",
+    "availableHeading": "Here when you need us",
+    "availability": "Emergency callouts<br>Monday to Sunday, 24/7",
+    "addressLineOne": "123 High Street",
+    "addressLineTwo": "London, SW9 8XY",
+    "locationText": "South London, UK",
+    "copyright": "Apex Plumbing & Heating"
+  }
+}

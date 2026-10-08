@@ -6,17 +6,17 @@ const formStatus = document.querySelector("#form-status");
 const year = document.querySelector("#current-year");
 
 const setText = (selector, value) => {
-  const element = document.querySelector(selector);
-  if (element && value !== undefined && value !== null) {
+  if (value === undefined || value === null) return;
+  document.querySelectorAll(selector).forEach((element) => {
     element.textContent = value;
-  }
+  });
 };
 
 const setHtml = (selector, value) => {
-  const element = document.querySelector(selector);
-  if (element && value !== undefined && value !== null) {
+  if (value === undefined || value === null) return;
+  document.querySelectorAll(selector).forEach((element) => {
     element.innerHTML = value;
-  }
+  });
 };
 
 const setAttributeByConfig = (selector, attribute, value) => {
@@ -38,6 +38,7 @@ const applyTheme = (theme) => {
   Object.entries(palette).forEach(([name, value]) => {
     root.style.setProperty(`--${name}`, value);
   });
+  setAttributeByConfig('meta[data-config="metaThemeColor"]', 'content', palette.green);
 };
 
 const applyImages = (images) => {
@@ -133,6 +134,23 @@ const applyConfig = (config) => {
   applyQuoteFormOptions(config.quote);
   applySlogans(config.slogans);
 
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'GeneralContractor',
+    name: business.name,
+    telephone: business.phone,
+    email: business.email,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: business.streetAddress,
+      addressLocality: business.locality,
+      postalCode: business.postcode,
+      addressCountry: business.country
+    },
+    areaServed: business.areaServed
+  };
+  setText('[data-config="structuredData"]', JSON.stringify(structuredData));
+
   if (seo.title) {
     document.title = seo.title;
   }
@@ -147,25 +165,34 @@ const applyConfig = (config) => {
     setText('[data-config="noticeLink"]', config.notice.linkText);
   }
 
-  setText('[data-config="brandName"]', business.brandName || business.name || 'APEX');
-  setText('[data-config="brandTagline"]', business.brandTagline || 'PLUMBING & HEATING');
-  setText('[data-config="brandInitial"]', business.brandInitial || 'A');
+  setText('[data-config="brandName"]', business.brandName || business.name || '');
+  setText('[data-config="brandTagline"]', business.brandTagline || '');
+  setText('[data-config="brandInitial"]', business.brandInitial || '');
   setAttributeByConfig('[data-config="brandHomeLabel"]', 'aria-label', `${business.name || 'Business'} home`);
 
   document.querySelectorAll('[data-config-attr="href:phoneHref"]').forEach((element) => {
-    element.href = `tel:${business.phone || '+440000000000'}`;
+    element.href = business.phone ? `tel:${business.phone}` : '#quote-form';
   });
+  setAttributeByConfig('[data-config-attr="href:emailHref"]', 'href', business.email ? `mailto:${business.email}` : '#quote-form');
+  setAttributeByConfig('[data-config="facebookLink"]', 'href', business.facebookUrl || '#');
+  setAttributeByConfig('[data-config="instagramLink"]', 'href', business.instagramUrl || '#');
 
-  setHtml('[data-config="navPhone"]', `<span aria-hidden="true">☎</span> ${business.phoneDisplay || business.phone || '020 7946 0958'}`);
-  setHtml('[data-config="heroTitle"]', hero.title || 'When water won\'t wait, <em>we\'re already on our way.</em>');
-  setText('[data-config="heroEyebrow"]', hero.eyebrow || 'South London\'s local plumbing team');
-  setText('[data-config="heroLede"]', hero.lede || 'Fast, reliable plumbing and heating repairs.');
-  setHtml('[data-config="heroPrimaryButton"]', `${hero.primaryButton || 'Call our team'} <span aria-hidden="true">↗</span>`);
-  setHtml('[data-config="heroSecondaryButton"]', `${hero.secondaryButton || 'Request a free quote'} <span aria-hidden="true">↓</span>`);
-  setText('[data-config="heroProofTitle"]', hero.proofTitle || 'Trusted across South London');
-  setText('[data-config="heroProofBody"]', hero.proofBody || 'Friendly help, straightforward pricing');
-  setText('[data-config="heroImageNoteTitle"]', hero.imageNoteTitle || 'Here when you need us');
-  setText('[data-config="heroImageNoteBody"]', hero.imageNoteBody || 'Emergency callouts, 24/7');
+  setHtml('[data-config="navPhone"]', `<span aria-hidden="true">☎</span> ${business.phoneDisplay || business.phone || 'Contact us'}`);
+  setHtml('[data-config="heroTitle"]', hero.title || '');
+  setText('[data-config="heroEyebrow"]', hero.eyebrow || '');
+  setText('[data-config="heroLede"]', hero.lede || '');
+  setHtml('[data-config="heroPrimaryButton"]', `${hero.primaryButton || 'Contact us'} <span aria-hidden="true">↗</span>`);
+  setHtml('[data-config="heroSecondaryButton"]', `${hero.secondaryButton || 'Get in touch'} <span aria-hidden="true">↓</span>`);
+  setText('[data-config="heroProofTitle"]', hero.proofTitle || '');
+  setText('[data-config="heroProofBody"]', hero.proofBody || '');
+  setText('[data-config="heroImageBadge"]', hero.imageBadge || business.brandInitial || '');
+  setText('[data-config="heroImageNoteTitle"]', hero.imageNoteTitle || '');
+  setText('[data-config="heroImageNoteBody"]', hero.imageNoteBody || '');
+
+  const servicesSection = config.servicesSection || {};
+  setText('[data-config="servicesEyebrow"]', servicesSection.eyebrow || '');
+  setHtml('[data-config="servicesHeading"]', servicesSection.heading || '');
+  setText('[data-config="servicesIntro"]', servicesSection.intro || '');
 
   (config.trustStrip || []).forEach((item, index) => {
     const selector = `[data-config="trustStrip-${index}"]`;
@@ -184,8 +211,8 @@ const applyConfig = (config) => {
     if (descElement) descElement.textContent = service.description || '';
   });
 
-  setText('[data-config="aboutEyebrow"]', about.eyebrow || 'A little about Apex');
-  setHtml('[data-config="aboutHeading"]', about.heading || 'Respect for your home.<br><em>Care in every detail.</em>');
+  setText('[data-config="aboutEyebrow"]', about.eyebrow || '');
+  setHtml('[data-config="aboutHeading"]', about.heading || '');
   setText('[data-config="aboutIntro"]', about.intro || '');
   setText('[data-config="aboutSupporting"]', about.supporting || '');
   setHtml('[data-config="aboutCta"]', `${about.cta || 'Tell us what you need'} <span aria-hidden="true">↗</span>`);
@@ -194,7 +221,7 @@ const applyConfig = (config) => {
   setHtml('[data-config="aboutExperienceLabel"]', (about.experienceLabel || 'YEARS<br>ON THE TOOLS').replace('\n', '<br>'));
 
   setText('[data-config="areaEyebrow"]', area.eyebrow || 'Close by, ready to help');
-  setHtml('[data-config="areaHeading"]', area.heading || 'South London<br><em>is our home turf.</em>');
+  setHtml('[data-config="areaHeading"]', area.heading || '');
   setText('[data-config="areaDescription"]', area.description || '');
   setText('[data-config="areaCta"]', `${area.cta || 'Check your postcode'} `);
   setHtml('[data-config="areaCta"]', `${area.cta || 'Check your postcode'} <span aria-hidden="true">↗</span>`);
@@ -217,7 +244,7 @@ const applyConfig = (config) => {
   setText('[data-config="reviewsEyebrow"]', reviews.eyebrow || 'Kind words from the neighbourhood');
   setHtml('[data-config="reviewsHeading"]', reviews.heading || 'Good people.<br><em>Good work.</em>');
   setText('[data-config="reviewsRating"]', reviews.rating || '5.0');
-  setText('[data-config="reviewsRatingLabel"]', reviews.ratingLabel || 'From our South London customers');
+  setText('[data-config="reviewsRatingLabel"]', reviews.ratingLabel || '');
   (reviews.items || []).forEach((item, index) => {
     const quoteSelector = `[data-config="review-quote-${index}"]`;
     const initialsSelector = `[data-config="review-initials-${index}"]`;
@@ -236,20 +263,24 @@ const applyConfig = (config) => {
   setText('[data-config="quoteEyebrow"]', quote.eyebrow || "Let's get it sorted");
   setHtml('[data-config="quoteHeading"]', quote.heading || "Tell us what's<br><em>going on.</em>");
   setText('[data-config="quoteDescription"]', quote.description || '');
-  setHtml('[data-config="quotePhone"]', `<span aria-hidden="true">☎</span> ${business.phoneDisplay || business.phone || '020 7946 0958'}`);
+  setHtml('[data-config="quotePhone"]', `<span aria-hidden="true">☎</span> ${business.phoneDisplay || business.phone || 'Contact us'}`);
   setText('[data-config="quoteSmallPrint"]', quote.smallPrint || 'Available 24 hours, every day');
   setText('[data-config="formNote"]', quote.formNote || "No obligation. We'll use your details to respond to your enquiry.");
 
-  setHtml('[data-config="footerTagline"]', footer.tagline || 'Good work. Done properly.<br>Keeping South London homes running.');
+  setHtml('[data-config="footerTagline"]', footer.tagline || '');
   setText('[data-config="footerGetInTouch"]', footer.getInTouchHeading || 'Get in touch');
-  setHtml('[data-config="footerPhone"]', business.phoneDisplay || business.phone || '020 7946 0958');
-  setHtml('[data-config="footerEmail"]', business.email || 'info@business.com');
-  setText('[data-config="footerAddressLineOne"]', footer.addressLineOne || business.streetAddress || '123 High Street');
-  setText('[data-config="footerAddressLineTwo"]', footer.addressLineTwo || `${business.locality || 'London'}, ${business.postcode || 'SW9 8XY'}`);
+  setHtml('[data-config="footerPhone"]', business.phoneDisplay || business.phone || 'Contact us');
+  setHtml('[data-config="footerEmail"]', business.email || '');
+  setText('[data-config="footerAddressLineOne"]', footer.addressLineOne || business.streetAddress || '');
+  setText('[data-config="footerAddressLineTwo"]', footer.addressLineTwo || [business.locality, business.postcode].filter(Boolean).join(', '));
   setText('[data-config="footerAvailabilityHeading"]', footer.availableHeading || 'Here when you need us');
-  setHtml('[data-config="footerAvailability"]', footer.availability || 'Emergency callouts<br>Monday to Sunday, 24/7');
+  setHtml('[data-config="footerAvailability"]', footer.availability || '');
   setText('[data-config="footerCopyright"]', footer.copyright || business.name || 'Business Name');
-  setText('[data-config="footerLocation"]', footer.locationText || 'South London, UK');
+  setText('[data-config="footerLocation"]', footer.locationText || '');
+
+  const quoteFormElement = document.querySelector('[data-config="quoteForm"]');
+  if (quoteFormElement && quote.formAction) quoteFormElement.action = quote.formAction;
+  setHtml('[data-config="quoteSubmitButton"]', `${quote.submitButton || 'Send enquiry'} <span aria-hidden="true">↗</span>`);
 };
 
 const initialiseConfig = async () => {

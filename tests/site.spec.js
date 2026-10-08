@@ -1,6 +1,7 @@
 const { test, expect } = require('@playwright/test');
 const AxeBuilder = require('@axe-core/playwright').default;
 const siteConfig = require('./site.config.json');
+const clientConfig = require('../site.config.json');
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
@@ -170,6 +171,32 @@ test('keeps contact links consistent with structured business data', async ({ pa
   expect(telephoneLinks).toContain(String(business.telephone).replace(/\D/g, ''));
 });
 
+test('renders footer content from site config', async ({ page }) => {
+  const footer = page.locator('.footer-main');
+  const contactColumn = footer.locator('.footer-column').nth(0);
+  const informationColumn = footer.locator('.footer-column').nth(1);
+
+  await expect(footer.locator('.footer-brand .brand-name > span')).toHaveText(clientConfig.business.brandName);
+  await expect(footer.locator('.footer-brand .brand-name small')).toHaveText(clientConfig.business.brandTagline);
+  expect(await footer.locator('[data-config="footerTagline"]').innerHTML()).toBe(clientConfig.footer.tagline);
+  await expect(contactColumn.locator('[data-config="footerPhone"]')).toHaveText(clientConfig.business.phoneDisplay);
+  await expect(contactColumn.locator('[data-config="footerPhone"]')).toHaveAttribute(
+    'href',
+    `tel:${clientConfig.business.phone}`,
+  );
+  await expect(contactColumn.locator('[data-config="footerEmail"]')).toHaveText(clientConfig.business.email);
+  await expect(contactColumn.locator('[data-config="footerEmail"]')).toHaveAttribute(
+    'href',
+    `mailto:${clientConfig.business.email}`,
+  );
+  await expect(contactColumn.locator('[data-config="footerAddressLineOne"]')).toHaveText(clientConfig.footer.addressLineOne);
+  await expect(contactColumn.locator('[data-config="footerAddressLineTwo"]')).toHaveText(clientConfig.footer.addressLineTwo);
+  await expect(informationColumn.locator('[data-config="footerAvailabilityHeading"]')).toHaveText(clientConfig.footer.availableHeading);
+  expect(await informationColumn.locator('[data-config="footerAvailability"]').innerHTML()).toBe(clientConfig.footer.availability);
+  await expect(informationColumn.locator('[data-config="facebookLink"]')).toHaveAttribute('href', clientConfig.business.facebookUrl);
+  await expect(informationColumn.locator('[data-config="instagramLink"]')).toHaveAttribute('href', clientConfig.business.instagramUrl);
+});
+
 test('has no serious or critical accessibility violations', async ({ page }) => {
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
@@ -181,15 +208,97 @@ test('has no serious or critical accessibility violations', async ({ page }) => 
   expect(significantViolations).toEqual([]);
 });
 
-test('does not overflow horizontally at common viewport widths', async ({ page }) => {
-  for (const width of [320, 375, 768, 1280]) {
-    await page.setViewportSize({ width, height: 900 });
-    const dimensions = await page.evaluate(() => ({
-      viewport: document.documentElement.clientWidth,
-      content: document.documentElement.scrollWidth,
-    }));
+test('keeps page content visible across device sizes and resolutions', async ({ page }) => {
+  const viewports = [
+    { width: 320, height: 568 },
+    { width: 375, height: 812 },
+    { width: 390, height: 844 },
+    { width: 700, height: 900 },
+    { width: 701, height: 900 },
+    { width: 768, height: 1024 },
+    { width: 900, height: 900 },
+    { width: 901, height: 768 },
+    { width: 1024, height: 768 },
+    { width: 1280, height: 800 },
+    { width: 1440, height: 900 },
+    { width: 1920, height: 1080 },
+  ];
+  const sectionSelector = 'header, main > section, .site-footer';
+  const contentSelector = [
+    '.brand',
+    '.site-nav',
+    '.hero-copy',
+    '.hero-visual',
+    '.services-grid',
+    '.about-copy',
+    '.area-copy',
+    '.map-frame',
+    '.work-gallery',
+    '.review-grid',
+    '.quote-intro',
+    '.quote-form',
+    '.footer-main',
+  ].join(', ');
 
-    expect(dimensions.content, `horizontal overflow at ${width}px`).toBeLessThanOrEqual(dimensions.viewport);
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport);
+    const layout = await page.evaluate(({ sectionSelector, contentSelector }) => {
+      const viewportWidth = document.documentElement.clientWidth;
+      const sections = [...document.querySelectorAll(sectionSelector)].map((element) => {
+        const rect = element.getBoundingClientRect();
+        return {
+          name: element.id || element.className || element.tagName,
+          width: rect.width,
+          height: rect.height,
+          left: rect.left,
+          right: rect.right,
+        };
+      });
+      const contentOutsideViewport = [...document.querySelectorAll(contentSelector)]
+        .filter((element) => getComputedStyle(element).display !== 'none')
+        .map((element) => ({
+          name: element.className || element.tagName,
+          rect: element.getBoundingClientRect(),
+        }))
+        .filter(({ rect }) => rect.width > 0 && (rect.left < -1 || rect.right > viewportWidth + 1))
+        .map(({ name }) => name);
+      const overflowingText = [...document.querySelectorAll('h1, h2, h3, .hero-lede, .service-item p, .review blockquote, .footer-column a')]
+        .filter((element) => element.getBoundingClientRect().width > 0 && element.scrollWidth > element.clientWidth + 1)
+        .map((element) => element.textContent.trim());
+      const brandMarks = [...document.querySelectorAll('.brand-mark')].map((element) => {
+        const style = getComputedStyle(element);
+        return {
+          alignItems: style.alignItems,
+          justifyItems: style.justifyItems,
+          lineHeight: Number.parseFloat(style.lineHeight),
+          height: element.clientHeight,
+        };
+      });
+
+      return {
+        viewportWidth,
+        documentWidth: document.documentElement.scrollWidth,
+        sections,
+        contentOutsideViewport,
+        overflowingText,
+        brandMarks,
+        menuToggleVisible: getComputedStyle(document.querySelector('.menu-toggle')).display !== 'none',
+        navigationVisible: getComputedStyle(document.querySelector('.site-nav')).display !== 'none',
+      };
+    }, { sectionSelector, contentSelector });
+
+    expect(layout.documentWidth, `horizontal page overflow at ${viewport.width}px`).toBeLessThanOrEqual(layout.viewportWidth);
+    expect(layout.sections.filter((section) => section.width <= 0 || section.height <= 0), `missing sections at ${viewport.width}px`).toEqual([]);
+    expect(layout.contentOutsideViewport, `content outside viewport at ${viewport.width}px`).toEqual([]);
+    expect(layout.overflowingText, `text overflow at ${viewport.width}px`).toEqual([]);
+    expect(layout.brandMarks.length).toBeGreaterThan(0);
+    for (const mark of layout.brandMarks) {
+      expect(mark.alignItems, `brand initial vertical alignment at ${viewport.width}px`).toBe('center');
+      expect(mark.justifyItems, `brand initial horizontal alignment at ${viewport.width}px`).toBe('center');
+      expect(mark.lineHeight, `brand initial line box at ${viewport.width}px`).toBeLessThanOrEqual(mark.height);
+    }
+    expect(layout.menuToggleVisible, `mobile menu visibility at ${viewport.width}px`).toBe(viewport.width <= 700);
+    expect(layout.navigationVisible, `navigation visibility at ${viewport.width}px`).toBe(viewport.width > 700);
   }
 });
 

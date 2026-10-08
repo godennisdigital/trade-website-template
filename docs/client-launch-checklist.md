@@ -13,6 +13,9 @@
 ## Content and assets
 
 - [ ] Tailor the page title, meta description, headline, services, and coverage areas to the real business.
+- [ ] Set the canonical HTTPS site URL in `site.config.json`, then run `npm run generate:site` and verify `robots.txt`, `sitemap.xml`, favicon, and all page metadata.
+- [ ] Review `privacy.html` and replace each review instruction with details that match the client's real data practices and providers.
+- [ ] Check the quote-form privacy notice and custom 404 page on the deployed domain.
 - [ ] Replace the map location and check that the embedded map points to the correct service area.
 - [ ] Replace demo photos with client-owned or properly licensed images; optimize them and keep useful alt text.
 - [ ] Confirm the phone links use a valid international number, for example `tel:+442079460958`.

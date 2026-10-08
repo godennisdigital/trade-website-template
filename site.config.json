@@ -1,4 +1,5 @@
 {
+  "siteUrl": "https://apexplumbingheating.co.uk",
   "business": {
     "name": "Apex Plumbing & Heating",
     "brandName": "APEX",
@@ -24,7 +25,26 @@
   },
   "seo": {
     "title": "24/7 Emergency Plumbers South London | Apex Plumbing & Heating",
-    "description": "24/7 emergency plumbing and heating repairs across South London. Gas Safe registered engineers, clear pricing and no call-out fees."
+    "description": "24/7 emergency plumbing and heating repairs across South London. Gas Safe registered engineers, clear pricing and no call-out fees.",
+    "notFoundTitle": "Page not found | Apex Plumbing & Heating",
+    "notFoundDescription": "The page you requested could not be found. Contact Apex Plumbing & Heating for help."
+  },
+  "privacy": {
+    "title": "Privacy Policy | Apex Plumbing & Heating",
+    "description": "How Apex Plumbing & Heating collects and uses personal information submitted through its website.",
+    "heading": "Privacy policy",
+    "lastUpdated": "Review before publication",
+    "intro": "This privacy policy explains how we handle personal information submitted through this website.",
+    "informationCollected": "If you submit an enquiry, we collect your name, phone number, selected service and any details you include in your message.",
+    "purpose": "We use this information to respond to your enquiry, discuss requested work and keep a record of our communications.",
+    "lawfulBasis": "We process enquiry details to take steps you request before entering into a contract. Where we retain enquiry records or handle related follow-up, confirm and document the appropriate lawful basis before publication.",
+    "sharing": "Quote form submissions are sent through Formspree. Confirm the provider's role, terms and current privacy information, and list any other recipients who may handle enquiries.",
+    "internationalTransfers": "Before publication, confirm whether the form provider or other recipients transfer information outside the UK and describe the applicable safeguards, if relevant.",
+    "retention": "Set the enquiry retention period and deletion process before publication; do not keep personal information for longer than necessary.",
+    "security": "We take appropriate steps to protect enquiry information. Confirm the practical safeguards used by the business and its service providers before publication.",
+    "rights": "Depending on the circumstances, you may have rights to access, correct or erase your personal information, restrict or object to processing, and request data portability. You may also complain to the Information Commissioner's Office.",
+    "cookies": "This template does not intentionally set analytics cookies. Review embedded maps, external fonts, images and other third-party services and update this section to describe any data or cookies they use.",
+    "complaints": "You can raise a concern with the UK Information Commissioner's Office. We encourage you to contact us first so we can try to resolve it."
   },
   "theme": {
     "colorScheme": "light",
@@ -160,7 +180,7 @@
     "heading": "Tell us what's<br><em>going on.</em>",
     "description": "Share a few details and our team will get back to you. Need urgent help? Call us any time.",
     "smallPrint": "Available 24 hours, every day",
-    "formNote": "No obligation. We'll use your details to respond to your enquiry.",
+    "formNote": "We'll use your details to respond to your enquiry.",
     "formAction": "https://formspree.io/f/mljdvzbd",
     "submitButton": "Request my free quote",
     "defaultOption": "Select a service",

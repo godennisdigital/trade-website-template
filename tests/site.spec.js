@@ -197,6 +197,63 @@ test('renders footer content from site config', async ({ page }) => {
   await expect(informationColumn.locator('[data-config="instagramLink"]')).toHaveAttribute('href', clientConfig.business.instagramUrl);
 });
 
+test('serves privacy and 404 pages with config-generated metadata', async ({ page, request }) => {
+  const homepageResponse = await request.get('/');
+  const homepageSource = await homepageResponse.text();
+  expect(homepageSource).toContain(
+    `<title data-config="metaTitle">${clientConfig.seo.title.replace(/&/g, '&amp;')}</title>`,
+  );
+  expect(homepageSource).toContain(`content="${clientConfig.seo.description}" data-config="metaDescription"`);
+
+  await expect(page).toHaveTitle(clientConfig.seo.title);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', clientConfig.seo.description);
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', 'favicon.svg');
+
+  const formPrivacyLink = page.locator('#contact-form a[href="privacy.html"]');
+  await expect(formPrivacyLink).toHaveText('Privacy policy');
+  await expect(page.locator('[data-config="formNote"]')).toContainText('respond to your enquiry');
+
+  await page.goto('/privacy.html');
+  await expect(page).toHaveTitle(clientConfig.privacy.title);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', clientConfig.privacy.description);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(clientConfig.privacy.heading);
+  await expect(page.locator('[data-config="privacyContactEmail"]')).toHaveText(clientConfig.business.email);
+  await expect(page.locator('[data-config="privacyContactAddress"]')).toHaveText(
+    [clientConfig.business.streetAddress, clientConfig.business.locality, clientConfig.business.postcode].join(', '),
+  );
+  await expect(page.locator('[data-config="privacyRetention"]')).toHaveText(clientConfig.privacy.retention);
+  await expect(page.locator('a[href="https://ico.org.uk/"]')).toBeVisible();
+
+  await page.goto('/404.html');
+  await expect(page).toHaveTitle(clientConfig.seo.notFoundTitle);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', clientConfig.seo.notFoundDescription);
+  const configuredBase = new URL(clientConfig.siteUrl);
+  await expect(page.locator('base')).toHaveAttribute(
+    'href',
+    `${configuredBase.pathname.replace(/\/+$/, '')}/`,
+  );
+  await expect(page.locator('[data-config="notFoundMessage"]')).toHaveText(clientConfig.seo.notFoundDescription);
+});
+
+test('generates robots, sitemap, and favicon from the configured domain and brand', async ({ request }) => {
+  const siteUrl = new URL(clientConfig.siteUrl);
+  const siteBase = `${siteUrl.origin}${siteUrl.pathname.replace(/\/+$/, '')}`;
+  const robotsResponse = await request.get('/robots.txt');
+  const sitemapResponse = await request.get('/sitemap.xml');
+  const faviconResponse = await request.get('/favicon.svg');
+
+  expect(robotsResponse.ok()).toBe(true);
+  expect(await robotsResponse.text()).toContain(`Sitemap: ${siteBase}/sitemap.xml`);
+  expect(sitemapResponse.ok()).toBe(true);
+  const sitemap = await sitemapResponse.text();
+  expect(sitemap).toContain(`${siteBase}/`);
+  expect(sitemap).toContain(`${siteBase}/privacy.html`);
+  expect(faviconResponse.ok()).toBe(true);
+  const favicon = await faviconResponse.text();
+  expect(favicon).toContain(`>${clientConfig.business.brandInitial}</text>`);
+  expect(favicon).toContain(clientConfig.theme.colors.lime);
+});
+
 test('has no serious or critical accessibility violations', async ({ page }) => {
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
@@ -206,6 +263,20 @@ test('has no serious or critical accessibility violations', async ({ page }) => 
   );
 
   expect(significantViolations).toEqual([]);
+});
+
+test('privacy and not-found pages have no serious or critical accessibility violations', async ({ page }) => {
+  for (const pathname of ['/privacy.html', '/404.html']) {
+    await page.goto(pathname);
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .analyze();
+    const significantViolations = results.violations.filter((violation) =>
+      ['critical', 'serious'].includes(violation.impact),
+    );
+
+    expect(significantViolations, `accessibility violations on ${pathname}`).toEqual([]);
+  }
 });
 
 test('keeps page content visible across device sizes and resolutions', async ({ page }) => {

@@ -2,6 +2,8 @@
   "name": "trade-website-template",
   "private": true,
   "scripts": {
+    "generate:site": "node scripts/generate-site-files.js",
+    "pretest": "npm run generate:site",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:report": "playwright show-report"

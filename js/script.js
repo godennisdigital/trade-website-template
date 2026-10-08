@@ -127,6 +127,8 @@ const applyConfig = (config) => {
   const reviews = config.reviews || {};
   const quote = config.quote || {};
   const footer = config.footer || {};
+  const privacy = config.privacy || {};
+  const pageType = document.documentElement.dataset.page || 'home';
 
   applyTheme(config.theme);
   applyImages(config.images);
@@ -151,13 +153,37 @@ const applyConfig = (config) => {
   };
   setText('[data-config="structuredData"]', JSON.stringify(structuredData));
 
-  if (seo.title) {
-    document.title = seo.title;
-  }
+  const pageSeo = pageType === 'privacy'
+    ? privacy
+    : pageType === 'not-found'
+      ? { title: seo.notFoundTitle, description: seo.notFoundDescription }
+      : seo;
+  if (pageSeo.title) document.title = pageSeo.title;
 
   const metaDescription = document.querySelector('meta[name="description"]');
-  if (metaDescription && seo.description) {
-    metaDescription.setAttribute('content', seo.description);
+  if (metaDescription && pageSeo.description) metaDescription.setAttribute('content', pageSeo.description);
+
+  if (pageType === 'privacy') {
+    setText('[data-config="privacyHeading"]', privacy.heading || 'Privacy policy');
+    setText('[data-config="privacyLastUpdated"]', privacy.lastUpdated || '');
+    setText('[data-config="privacyIntro"]', privacy.intro || '');
+    setText('[data-config="privacyInformationCollected"]', privacy.informationCollected || '');
+    setText('[data-config="privacyPurpose"]', privacy.purpose || '');
+    setText('[data-config="privacyLawfulBasis"]', privacy.lawfulBasis || '');
+    setText('[data-config="privacySharing"]', privacy.sharing || '');
+    setText('[data-config="privacyInternationalTransfers"]', privacy.internationalTransfers || '');
+    setText('[data-config="privacyRetention"]', privacy.retention || '');
+    setText('[data-config="privacySecurity"]', privacy.security || '');
+    setText('[data-config="privacyRights"]', privacy.rights || '');
+    setText('[data-config="privacyCookies"]', privacy.cookies || '');
+    setText('[data-config="privacyComplaints"]', privacy.complaints || '');
+    setText('[data-config="privacyContactEmail"]', business.email || '');
+    setAttributeByConfig('[data-config="privacyContactEmail"]', 'href', business.email ? `mailto:${business.email}` : '#');
+    setText('[data-config="privacyContactAddress"]', [business.streetAddress, business.locality, business.postcode].filter(Boolean).join(', '));
+  }
+
+  if (pageType === 'not-found') {
+    setText('[data-config="notFoundMessage"]', seo.notFoundDescription || 'The page may have moved.');
   }
 
   if (config.notice) {

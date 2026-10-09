@@ -15,7 +15,7 @@ module.exports = defineConfig({
     screenshot: 'only-on-failure',
   },
   webServer: {
-    command: 'python3 -m http.server 4173 --bind 127.0.0.1',
+    command: 'node scripts/test-server.js',
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 10_000,
